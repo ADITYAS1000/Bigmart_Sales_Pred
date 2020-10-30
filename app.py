@@ -11,11 +11,11 @@ model = pickle.load(pickle_in)
 def main():   
     
     html_temp = '''
-    <div style = 'background-color:tomato; padding:10px'>
+    <div style = 'background-color:#7171da; padding:10px'>
     <h2 style =  'color:white; text-align:center;'>BigMart Sales Prediction</h2>
     </div>
     '''
-    st.beta_set_page_config(page_title='BigMart Sales Prediction', 
+    st.set_page_config(page_title='BigMart Sales Prediction', 
                             # page_icon = favicon, 
                             # layout = 'wide', 
                             initial_sidebar_state = 'auto')
