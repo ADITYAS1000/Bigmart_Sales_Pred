@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 27 09:05:13 2020
-
-@author: Aditya
-"""
-
 import pickle
 from pred_func import predict_sales
 import streamlit as st
