@@ -1,4 +1,3 @@
-
 import pickle
 from pred_func import predict_sales
 import streamlit as st
@@ -9,14 +8,14 @@ pickle_in = open('Best_model.pkl','rb')
 model = pickle.load(pickle_in)
 
 
-def main():
+def main():   
     
     html_temp = '''
-    <div style = 'background-color:#7171da; padding:10px'>
+    <div style = 'background-color:tomato; padding:10px'>
     <h2 style =  'color:white; text-align:center;'>BigMart Sales Prediction</h2>
     </div>
     '''
-    st.set_page_config(page_title='BigMart Sales Prediction', 
+    st.beta_set_page_config(page_title='BigMart Sales Prediction', 
                             # page_icon = favicon, 
                             # layout = 'wide', 
                             initial_sidebar_state = 'auto')
@@ -70,20 +69,21 @@ def main():
                      'Outlet_Establishment_Year' : outlet_establishment_year, 'Outlet_Size' : outlet_size, 
                      'Outlet_Location_Type' : outlet_location_type, 'Outlet_Type' : outlet_type}
         
-        with open('input_df.pkl', 'wb') as handle:
-            pickle.dump(input_dict,handle)
-            handle.close()
+#         with open('input_df.pkl', 'wb') as handle:
+#             pickle.dump(input_dict,handle)
+#             handle.close()
         
         with open('Best_model.pkl', 'rb') as handle:
             model = pickle.load(handle)
             handle.close()
         
-        # with open('build_features.pkl', 'rb') as handle:
-        #     features = pickle.load(handle)
-        #     handle.close()
+        with open('build_features.pkl', 'rb') as handle:
+            features = pickle.load(handle)
+            handle.close()
             
-        result = predict_sales(input_dict,model)
+        result = predict_sales(input_dict,model,features)
         st.success('The sales for this product is {}'.format(result))
         
+
 if __name__ == '__main__':
     main()
