@@ -1,10 +1,17 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Oct 28 06:32:11 2020
 
+@author: Aditya
+
+"""
 import numpy as np
 import pandas as pd
 import pickle
+from sklearn_pandas import DataFrameMapper
 from sklearn.preprocessing import StandardScaler, QuantileTransformer, PowerTransformer
 
-def predict_sales(data, model):
+def predict_sales(data, model, features):
     with open('train_dataset.pkl', 'rb') as handle:
         train = pickle.load(handle)
         handle.close()
@@ -52,12 +59,16 @@ def predict_sales(data, model):
                                        'Outlet_Identifier','Outlet_Establishment_Year'])
     
     #Dropping unnecessary features
-    sc = StandardScaler()
-    combined = sc.fit_transform(combined.drop(['Item_Outlet_Sales','df_train'],axis=1))
+    combined = combined.drop(['Item_Outlet_Sales','df_train'],axis=1)
     
-    new_arr = combined[-1]
-    new_arr = np.array(new_arr,ndmin=2)
+    # We want the scaled data to be in DataFrame instead of a numpy array
+    # Because XGboost gives feature mismatch error, so we use a dataframe to ensure that model is provided
+    # same features ..in the same order as train using 'features' 
+    mapper = DataFrameMapper([(combined.columns, StandardScaler())])
+    scaled_features = mapper.fit_transform(combined.copy(), len(combined.columns))
+    scaled_features_df = pd.DataFrame(scaled_features, index=combined.index, columns=combined.columns)
+    scaled_features_df = scaled_features_df.tail(1)
     
-    prediction = model.predict(new_arr)
+    prediction = model.predict(scaled_features_df[features])
     
     return round(np.power(prediction[0],2),5)
