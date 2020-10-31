@@ -48,7 +48,7 @@ def main():
         outlet_establishment_year = st.selectbox('Outlet_Establishment_Year',
                                  options=[1985, 1987, 1997, 1998, 1999, 2002, 2004, 2007, 2009])
     with col3:
-        outlet_size = st.selectbox('Outlet_Establishment_Year',
+        outlet_size = st.selectbox('Outlet_Size',
                                  options=['Small','Medium', 'High'])
     
     col1, col2 = st.beta_columns(2)
